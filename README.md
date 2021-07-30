@@ -8,18 +8,23 @@ This package annotates genetic variants with their predicted effect on splicing,
 **Update**: The annotations for all possible substitutions, 1 base insertions, and 1-4 base deletions within genes are available [here](https://basespace.illumina.com/s/otSPW8hnhaZR) for download. These annotations are free for academic and not-for-profit use; other use requires a commercial license from Illumina, Inc.
 
 ### Installation
-The simplest way to install SpliceAI is through pip or conda:
+The simplest way to install original SpliceAI is through pip or conda:
 ```sh
 pip install spliceai
 # or
 conda install -c bioconda spliceai
 ```
 
-Alternately, SpliceAI can be installed from the [github repository](https://github.com/Illumina/SpliceAI.git):
+Alternately, this SpliceAI version can be installed from the [github repository](https://github.com/mainguyenanhvu/SpliceAI.git):
 ```sh
-git clone https://github.com/Illumina/SpliceAI.git
+git clone https://github.com/mainguyenanhvu/SpliceAI.git
 cd SpliceAI
 python setup.py install
+```
+
+or install through pip:
+```sh
+pip3 install -no-cache-dir git+https://github.com/mainguyenanhvu/SpliceAI.git
 ```
 
 SpliceAI requires ```tensorflow>=1.2.0```, which is best installed separately via pip or conda (see the [TensorFlow](https://www.tensorflow.org/) website for other installation options):
@@ -107,4 +112,4 @@ donor_prob = y[0, :, 2]
 ```
 
 ### Contact
-Kishore Jaganathan: kishorejaganathan@gmail.com
+Anh-Vu Mai-Nguyen: mainguyenanhvu@gmail.com
