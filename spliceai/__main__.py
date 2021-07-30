@@ -1,3 +1,4 @@
+import os
 import sys
 import argparse
 import logging.config
@@ -16,9 +17,9 @@ except ImportError:
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
 
 import yaml
-with resource_filename(__name__,'config_files/spliceai_logging_config.yml') as logger_path:
-    with open(logger_path, 'r') as config:
-        logging.config.dictConfig(yaml.safe_load(config))
+logger_path resource_filename(__name__,'config_files/spliceai_logging_config.yml')
+with open(logger_path, 'r') as config:
+    logging.config.dictConfig(yaml.safe_load(config))
 
 logger = logging.getLogger('cloaked_chatter')
 
