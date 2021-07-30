@@ -64,19 +64,18 @@ class Annotator:
         return dist_ann
 
 
+IUPAC = 'RYSWKMBDHVN.-'
+BASE_TRANSLATION = str.maketrans(IUPAC+'ACGT', '\x00'*len(IUPAC)+'\x01\x02\x03\x04')
+BASE_MAP = np.asarray([[0, 0, 0, 0],
+                    [1, 0, 0, 0],
+                    [0, 1, 0, 0],
+                    [0, 0, 1, 0],
+                    [0, 0, 0, 1]])
+
 def one_hot_encode(seq):
-
-    map = np.asarray([[0, 0, 0, 0],
-                      [1, 0, 0, 0],
-                      [0, 1, 0, 0],
-                      [0, 0, 1, 0],
-                      [0, 0, 0, 1]])
-
-    seq = seq.upper().replace('A', '\x01').replace('C', '\x02')
-    seq = seq.replace('G', '\x03').replace('T', '\x04').replace('N', '\x00')
-
-    return map[np.fromstring(seq, np.int8) % 5]
-
+    translated = seq.upper().translate(BASE_TRANSLATION).encode()
+    base_map = BASE_MAP[np.frombuffer(translated, np.int8)]
+    return base_map
 
 def normalise_chrom(source, target):
 

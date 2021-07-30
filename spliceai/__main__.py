@@ -1,9 +1,9 @@
 import sys
 import argparse
-import logging
+import logging.config
 import pysam
 from spliceai.utils import Annotator, get_delta_scores
-
+from pkg_resources import resource_filename
 
 try:
     from sys.stdin import buffer as std_in
@@ -11,6 +11,16 @@ try:
 except ImportError:
     from sys import stdin as std_in
     from sys import stdout as std_out
+
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
+
+import yaml
+with resource_filename(__name__,'config_files/spliceai_logging_config.yml') as logger_path:
+    with open(logger_path, 'r') as config:
+        logging.config.dictConfig(yaml.safe_load(config))
+
+logger = logging.getLogger('cloaked_chatter')
 
 
 def get_options():
@@ -44,14 +54,14 @@ def main():
     args = get_options()
 
     if None in [args.I, args.O, args.D, args.M]:
-        logging.error('Usage: spliceai [-h] [-I [input]] [-O [output]] -R reference -A annotation '
+        logger.error('Usage: spliceai [-h] [-I [input]] [-O [output]] -R reference -A annotation '
                       '[-D [distance]] [-M [mask]]')
         exit()
 
     try:
         vcf = pysam.VariantFile(args.I)
     except (IOError, ValueError) as e:
-        logging.error('{}'.format(e))
+        logger.error('{}'.format(e))
         exit()
 
     header = vcf.header
@@ -63,7 +73,7 @@ def main():
     try:
         output = pysam.VariantFile(args.O, mode='w', header=header)
     except (IOError, ValueError) as e:
-        logging.error('{}'.format(e))
+        logger.error('{}'.format(e))
         exit()
 
     ann = Annotator(args.R, args.A)
